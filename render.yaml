@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: credit-card-approval
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python build_assets.py
+    startCommand: gunicorn app:app
+    plan: free

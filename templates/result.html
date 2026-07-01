@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Evaluation Results</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+                <div class="glass-card p-5 text-center">
+                    
+                    {% if error %}
+                        <!-- Error State -->
+                        <div class="mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="text-danger mb-3" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                            </svg>
+                            <h2 class="text-danger fw-bold">Evaluation Error</h2>
+                            <p class="text-secondary mt-3">{{ error }}</p>
+                        </div>
+                    {% else %}
+                        <!-- Success Evaluation State -->
+                        <h1 class="display-5 fw-bold mb-1">Evaluation Assessment</h1>
+                        <p class="text-secondary mb-4">Underwritten by Machine Learning Credit Underwriter</p>
+                        
+                        <!-- Status Header -->
+                        <div class="mb-4">
+                            {% if applicant.status == "Approved" %}
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 py-3 rounded-3">
+                                    <h3 class="text-success fw-bold m-0">✓ APPLICATION APPROVED</h3>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 py-3 rounded-3">
+                                    <h3 class="text-danger fw-bold m-0">✗ APPLICATION REJECTED</h3>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Score SVG Circle Gauge -->
+                        <div class="score-circle-container">
+                            <svg width="200" height="200" viewBox="0 0 200 200">
+                                <circle class="score-circle-bg" cx="100" cy="100" r="85"></circle>
+                                <circle class="score-circle-val" id="scoreCircle" cx="100" cy="100" r="85"
+                                        stroke="{% if applicant.status == 'Approved' %}var(--color-success){% else %}var(--color-danger){% endif %}"
+                                        stroke-dasharray="534" stroke-dashoffset="534"></circle>
+                            </svg>
+                            <div class="score-text">
+                                <div class="score-num" style="color: {% if applicant.status == 'Approved' %}var(--color-success){% else %}var(--color-danger){% endif %};">
+                                    {{ applicant.approval_score }}%
+                                </div>
+                                <div class="score-lbl">Approval Probability</div>
+                            </div>
+                        </div>
+
+                        <!-- Risk Assessment Badge -->
+                        <div class="mb-5">
+                            <span class="text-secondary me-2">Risk Classification:</span>
+                            <span class="badge-risk {% if applicant.risk_level == 'Low Risk' %}risk-low{% elif applicant.risk_level == 'Medium Risk' %}risk-medium{% else %}risk-high{% endif %}">
+                                {{ applicant.risk_level }}
+                            </span>
+                        </div>
+
+                        <!-- Applicant profile details -->
+                        <h4 class="text-start mb-3 fs-5 border-bottom border-secondary border-opacity-25 pb-2 text-cyan">Profile Summary</h4>
+                        <div class="row g-3 mb-5 text-start">
+                            <div class="col-6">
+                                <div class="text-secondary small">Annual Income</div>
+                                <div class="fw-semibold text-light">{{ applicant.income }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-secondary small">Applicant Age</div>
+                                <div class="fw-semibold text-light">{{ applicant.age }} Years</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-secondary small">Employment Duration</div>
+                                <div class="fw-semibold text-light">{{ applicant.years_employed }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-secondary small">Education Level</div>
+                                <div class="fw-semibold text-light">{{ applicant.education }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Decision Rationale/Explanation -->
+                        <div class="text-start p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 mb-5 small">
+                            <strong class="text-light d-block mb-1">Decision Rationale:</strong>
+                            {% if applicant.status == "Approved" %}
+                                <span class="text-secondary">The applicant profile exhibits positive repayment markers. The debt-to-income ratio and tenure stability are within acceptable thresholds, predicting a low likelihood of repayment default. Credit card issuance is recommended.</span>
+                            {% else %}
+                                <span class="text-secondary">The applicant profile presents delinquency markers. Factors such as lower work tenure, high family dependency, or categorical groupings correlate with elevated risk profiles in our historical default sets. Issuance of card rejected.</span>
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+
+                    <!-- Back Button -->
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                        <a href="/" class="btn btn-primary-gradient py-3 text-decoration-none">
+                            Return to Dashboard
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to animate SVG Gauge on load -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const circle = document.getElementById("scoreCircle");
+            if (circle) {
+                const score = parseFloat("{{ applicant.approval_score | default(0) }}");
+                const maxOffset = 534; // 2 * pi * r (2 * 3.14159 * 85)
+                const offset = maxOffset - (score / 100) * maxOffset;
+                
+                // Add a small delay for animation trigger
+                setTimeout(() => {
+                    circle.style.strokeDashoffset = offset;
+                }, 200);
+            }
+        });
+    </script>
+</body>
+</html>

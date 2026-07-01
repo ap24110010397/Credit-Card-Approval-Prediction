@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Scoring System - Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Left Sidebar Navigation Panel -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">🏦 CREDIT SCORE INC.</span>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-link active" id="nav-apply" data-target="apply-section">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-credit-card-2-front" viewBox="0 0 16 16">
+                        <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                        <path d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                    </svg>
+                    Apply for Card
+                </button>
+                <button class="sidebar-link" id="nav-model" data-target="model-section">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-cpu" viewBox="0 0 16 16">
+                        <path d="M5 0a.5.5 0 0 1 .5.5V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h.5a.5.5 0 0 1 .5.5v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v.5a.5.5 0 0 1-.5.5H13v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-1v1.5a.5.5 0 0 1-1 0V14h-.5a.5.5 0 0 1-.5-.5V13H2v-1.5a.5.5 0 0 1 0-1H2v-1.5a.5.5 0 0 1 0-1H2v-1.5a.5.5 0 0 1 0-1H2V5.5a.5.5 0 0 1 .5-.5H3V3.5a.5.5 0 0 1 .5-.5zM3 3.5A.5.5 0 0 0 3.5 4h9a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v9z"/>
+                    </svg>
+                    Model Performance
+                </button>
+                <button class="sidebar-link" id="nav-dataset" data-target="dataset-section">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                        <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-3 0v-3H2v3h2z"/>
+                    </svg>
+                    Dataset Insights
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Top Dashboard Bar -->
+            <div class="top-nav">
+                <h2 class="top-nav-title" id="page-title">Credit Card Application Portal</h2>
+                <div class="small text-secondary">
+                    Model: <span class="badge bg-primary text-white">{{ model_name }}</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Panels (Toggled by Sidebar) -->
+            <div class="row justify-content-center">
+                <div class="col-xl-9 col-lg-11">
+                    
+                    <!-- PANEL 1: Credit Application Form (Default view in middle) -->
+                    <div id="apply-section" class="panel-content">
+                        <div class="classic-card">
+                            <h3 class="section-header-title">Applicant Demographics Form</h3>
+                            
+                            <form action="/predict" method="POST" id="predictionForm">
+                                
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender" name="gender" required>
+                                            <option value="F">Female</option>
+                                            <option value="M">Male</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="age" class="form-label">Age (Years)</label>
+                                        <input type="number" class="form-control" id="age" name="age" min="18" max="100" value="35" required>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="own_car" class="form-label">Owns a Car?</label>
+                                        <select class="form-select" id="own_car" name="own_car" required>
+                                            <option value="N">No</option>
+                                            <option value="Y">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="own_realty" class="form-label">Owns Real Estate?</label>
+                                        <select class="form-select" id="own_realty" name="own_realty" required>
+                                            <option value="Y">Yes</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="income" class="form-label">Total Annual Income ($)</label>
+                                        <input type="number" class="form-control" id="income" name="income" min="0" value="150000" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="income_type" class="form-label">Income Source Classification</label>
+                                        <select class="form-select" id="income_type" name="income_type" required>
+                                            <option value="Working">Working Class</option>
+                                            <option value="Commercial associate">Commercial Associate</option>
+                                            <option value="Pensioner">Pensioner / Retired</option>
+                                            <option value="State servant">State Servant / Govt</option>
+                                            <option value="Student">Student</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="education" class="form-label">Highest Education Attained</label>
+                                        <select class="form-select" id="education" name="education" required>
+                                            <option value="Secondary / secondary special">Secondary / High School</option>
+                                            <option value="Higher education">Higher Education / Degree</option>
+                                            <option value="Incomplete higher">Incomplete Higher</option>
+                                            <option value="Lower secondary">Lower Secondary</option>
+                                            <option value="Academic degree">Academic Degree (PhD/Post-grad)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="housing" class="form-label">Housing Type</label>
+                                        <select class="form-select" id="housing" name="housing" required>
+                                            <option value="House / apartment">House / Apartment</option>
+                                            <option value="With parents">Living with Parents</option>
+                                            <option value="Municipal apartment">Municipal Apartment</option>
+                                            <option value="Rented apartment">Rented Apartment</option>
+                                            <option value="Office apartment">Office Apartment</option>
+                                            <option value="Co-op apartment">Co-op Apartment</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="children" class="form-label">Number of Children</label>
+                                        <input type="number" class="form-control" id="children" name="children" min="0" value="0" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="family_members" class="form-label">Total Family Members</label>
+                                        <input type="number" class="form-control" id="family_members" name="family_members" min="1" value="2" required>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="occupation" class="form-label">Occupation Field</label>
+                                        <select class="form-select" id="occupation" name="occupation" required>
+                                            <option value="Unknown">Not Specified / Unknown</option>
+                                            <option value="Laborers">Laborer / Service</option>
+                                            <option value="Core staff">Core Office Staff</option>
+                                            <option value="Sales staff">Sales Representative</option>
+                                            <option value="Managers">Management</option>
+                                            <option value="Drivers">Driver / Transport</option>
+                                            <option value="High skill tech staff">High Skill Tech / IT</option>
+                                            <option value="Accountants">Accountant / Finance</option>
+                                            <option value="Medicine staff">Medical Staff</option>
+                                            <option value="Cooking staff">Cooking / Culinary</option>
+                                            <option value="Security staff">Security / Police</option>
+                                            <option value="Cleaning staff">Cleaning / Janitorial</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="employment_status" class="form-label">Employment Status</label>
+                                        <select class="form-select" id="employment_status" name="employment_status" required>
+                                            <option value="employed">Employed</option>
+                                            <option value="unemployed">Unemployed / Retired</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4" id="years_employed_group">
+                                    <label for="years_employed" class="form-label">Years of Employment</label>
+                                    <input type="number" class="form-control" id="years_employed" name="years_employed" min="0" step="0.1" value="3.5">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label d-block text-secondary">Contact Coordinate Flags</label>
+                                    <div class="form-check form-check-inline me-4">
+                                        <input class="form-check-input" type="checkbox" id="work_phone" name="work_phone" value="1">
+                                        <label class="form-check-label text-dark small" for="work_phone">Work Phone</label>
+                                    </div>
+                                    <div class="form-check form-check-inline me-4">
+                                        <input class="form-check-input" type="checkbox" id="phone" name="phone" value="1" checked>
+                                        <label class="form-check-label text-dark small" for="phone">Personal Phone</label>
+                                    </div>
+                                    <div class="form-check form-check-inline me-4">
+                                        <input class="form-check-input" type="checkbox" id="email" name="email" value="1">
+                                        <label class="form-check-label text-dark small" for="email">Email Coordinates</label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid mt-4">
+                                    <button type="submit" class="btn btn-primary-classic py-3" id="submitBtn">
+                                        Evaluate Credit Score
+                                    </button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 2: Model Performance Section (in middle card) -->
+                    <div id="model-section" class="panel-content d-none">
+                        <div class="classic-card">
+                            <h3 class="section-header-title">Model Tuning & Evaluation Performance</h3>
+                            <p class="text-secondary small mb-4">Evaluation of machine learning algorithms tested on the held-out stratified test dataset (7,292 records).</p>
+                            
+                            <div class="table-responsive border rounded-3 mb-5">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Model Classifier</th>
+                                            <th>Accuracy</th>
+                                            <th>Precision</th>
+                                            <th>Recall</th>
+                                            <th>F1-Score</th>
+                                            <th>ROC-AUC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in metrics %}
+                                        <tr {% if row.Model == model_name %}class="table-active-row fw-semibold text-primary"{% endif %}>
+                                            <td>
+                                                {{ row.Model }} 
+                                                {% if row.Model == model_name %}<span class="badge-active ms-2">Champion</span>{% endif %}
+                                            </td>
+                                            <td>{{ (row.Accuracy * 100) | round(2) }}%</td>
+                                            <td>{{ (row.Precision * 100) | round(2) }}%</td>
+                                            <td>{{ (row.Recall * 100) | round(2) }}%</td>
+                                            <td>{{ row['F1-Score'] | round(4) }}</td>
+                                            <td>{{ row['ROC-AUC'] | round(4) }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="row g-4 mt-2">
+                                <div class="col-12 text-center">
+                                    <h5 class="text-secondary fs-6 mb-3">Model Accuracy & Recall Comparison Plot</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/07_model_comparison.png') }}" class="img-fluid rounded border shadow-sm" alt="Comparison Metrics">
+                                </div>
+                                <div class="col-md-6 text-center mt-5">
+                                    <h5 class="text-secondary fs-6 mb-3">Confusion Matrix (Fitted Champion)</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/08_best_model_confusion_matrix.png') }}" class="img-fluid rounded border shadow-sm" style="max-height: 300px;" alt="Confusion Matrix">
+                                </div>
+                                <div class="col-md-6 text-center mt-5">
+                                    <h5 class="text-secondary fs-6 mb-3">Feature Importance Splits</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/09_feature_importances.png') }}" class="img-fluid rounded border shadow-sm" style="max-height: 300px;" alt="Feature Importance">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 3: Dataset Insights Section (in middle card) -->
+                    <div id="dataset-section" class="panel-content d-none">
+                        <div class="classic-card">
+                            <h3 class="section-header-title">Exploratory Data Analysis (EDA) Insights</h3>
+                            <p class="text-secondary small mb-4">Historical characteristics of applicant demographics and default behaviors.</p>
+                            
+                            <div class="row g-4 text-center">
+                                <div class="col-md-6">
+                                    <h5 class="text-secondary fs-6 mb-3">Delinquency (Rejection) Class Ratio</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/01_target_distribution.png') }}" class="img-fluid rounded border shadow-sm" alt="Target Distribution">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="text-secondary fs-6 mb-3">Default Delinquency by Education Level</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/05_rejection_by_education.png') }}" class="img-fluid rounded border shadow-sm" alt="Rejection by Education">
+                                </div>
+                                <div class="col-12 mt-5">
+                                    <h5 class="text-secondary fs-6 mb-3">Applicant Total Income Density Distribution</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/02_income_distribution.png') }}" class="img-fluid rounded border shadow-sm" alt="Income Distribution">
+                                </div>
+                                <div class="col-12 mt-5">
+                                    <h5 class="text-secondary fs-6 mb-3">Correlation Matrix of Features</h5>
+                                    <img src="{{ url_for('static', filename='images/plots/06_correlation_heatmap.png') }}" class="img-fluid rounded border shadow-sm" style="max-width: 500px; margin: 0 auto;" alt="Correlation Heatmap">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom validation and panel navigation script -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
